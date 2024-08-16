@@ -1,8 +1,8 @@
-import fake.creature as data
+import data.creature as data
 from model.creature import Creature
 
 
-def get_all() -> list[Creature]:
+def get_all() -> list[Creature] | list:
     return data.get_all()
 
 def get_one(name: str) -> Creature | None:
@@ -11,11 +11,8 @@ def get_one(name: str) -> Creature | None:
 def create(creature: Creature) -> Creature:
     return data.create(creature=creature)
 
-def replace(id, creature: Creature) -> Creature:
-    return data.replace(id, creature=creature)
+def modify(name: str, creature: Creature) -> Creature | None:
+    return data.modify(name=name, creature=creature)
 
-def modify(id, creature: Creature) -> Creature:
-    return data.modify(id, creature=creature)
-
-def delete(id, creature: Creature) -> bool:
-    return data.delete(id)
+def delete(name: str) -> bool:
+    return data.delete(name=name)
