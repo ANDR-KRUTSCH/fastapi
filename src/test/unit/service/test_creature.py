@@ -3,26 +3,33 @@ import os
 import pytest
 
 from model.creature import Creature
-from service import creature as code
 from errors import Missing
 
-from data.init import get_or_create_db
+os.environ['CRYPTID_UNIT_TEST'] = 'True'
+
+from service import creature as code
 
 
-DB_PATH = get_or_create_db(DB_NAME='test')[1]
+@pytest.fixture(scope='session')
+def delete_db():
+    from data.creature import db_manager
 
-sample = Creature(name='Yeti', country='CN', area='Himalayas', description='Hirsute Himalayan', aka='Abominable Snowman')
+    yield db_manager
 
-def test_create():
+    os.remove(path=db_manager.DB_PATH)
+
+@pytest.fixture
+def sample(delete_db) -> Creature:
+    return Creature(name='Metro 2033', country='RU', area='Moscow', description='Metro 2033', aka='Metro 2033') 
+
+def test_create(delete_db, sample: Creature):
     response = code.create(creature=sample)
     assert response == sample
 
-def test_get_exists():
-    response = code.get_one(name='Yeti')
+def test_get_exists(delete_db, sample: Creature):
+    response = code.get_one(name='Metro 2033')
     assert response == sample
 
-def test_get_missing():
+def test_get_missing(delete_db):
     with pytest.raises(Missing):
-        code.get_one(name='Boxturtle')
-
-os.remove(path=DB_PATH)
+        code.get_one(name='Resident Evil')

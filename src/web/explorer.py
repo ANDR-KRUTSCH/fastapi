@@ -1,12 +1,15 @@
+import os
+
 from fastapi import APIRouter, Body, HTTPException
 
-import service.explorer as service
 from model.explorer import Explorer
 from errors import Missing, Duplicate
 
+if os.environ.get('CRYPTID_UNIT_TEST'): from fake import explorer as service
+else: from service import explorer as service
+
 
 router = APIRouter(prefix='/explorer')
-
 
 @router.get(path='/')
 def get_all() -> list[Explorer] | list:
@@ -19,7 +22,7 @@ def get_one(name: str) -> Explorer | None:
     except Missing as exc:
         raise HTTPException(status_code=404, detail=exc.msg)
 
-@router.post(path='/')
+@router.post(path='/', status_code=201)
 def create(explorer: Explorer = Body()) -> Explorer:
     try:
         return service.create(explorer=explorer)

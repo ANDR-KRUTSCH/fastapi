@@ -1,17 +1,19 @@
-import pytest
 import os
+
+import pytest
 
 from fastapi import HTTPException
 
-os.environ["CRYPTID_UNIT_TEST"] = "true"
-
 from model.user import User
+
+os.environ['CRYPTID_UNIT_TEST'] = 'True'
+
 from web import user
 
 
 @pytest.fixture
 def sample() -> User:
-    return User(name="metro_2033", hash="metro_2033")
+    return User(name='Metro 2033', hash='Metro 2033')
 
 @pytest.fixture
 def fakes() -> list[User]:
@@ -31,5 +33,5 @@ def test_get_one(fakes: list[User]):
 
 def test_get_one_missing():
     with pytest.raises(HTTPException) as exc:
-        user.get_one(name="outlast")
+        user.get_one(name='Outlast')
         assert exc.value.status_code == 404

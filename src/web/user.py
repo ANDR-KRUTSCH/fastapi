@@ -7,9 +7,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from model.user import User
 from errors import Missing, Duplicate
 
-
 if os.environ.get('CRYPTID_UNIT_TEST'): from fake import user as service
 else: from service import user as service
+
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

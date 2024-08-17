@@ -1,12 +1,15 @@
+import os
+
 from fastapi import APIRouter, Body, HTTPException
 
-import service.creature as service
 from model.creature import Creature
 from errors import Missing, Duplicate
 
+if os.environ.get('CRYPTID_UNIT_TEST'): from fake import creature as service
+else: from service import creature as service
+
 
 router = APIRouter(prefix='/creature')
-
 
 @router.get(path='/')
 def get_all() -> list[Creature] | list:
@@ -19,7 +22,7 @@ def get_one(name: str) -> Creature | None:
     except Missing as exc:
         raise HTTPException(status_code=404, detail=exc.msg)
 
-@router.post(path='/')
+@router.post(path='/', status_code=201)
 def create(creature: Creature = Body()) -> Creature:
     try:
         return service.create(creature=creature)
