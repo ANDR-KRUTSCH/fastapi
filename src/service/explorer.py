@@ -11,8 +11,8 @@ def get_one(name: str) -> Explorer | None:
 def create(explorer: Explorer) -> Explorer:
     return data.create(explorer=explorer)
 
-def modify(name: str, explorer: Explorer) -> Explorer | None:
+def modify(name: str, explorer: Explorer) -> Explorer:
     return data.modify(name=name, explorer=explorer)
 
-def delete(name: str) -> bool:
+def delete(name: str) -> True:
     return data.delete(name=name)

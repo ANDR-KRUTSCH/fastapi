@@ -2,12 +2,13 @@ import os
 import pytest
 
 from model.creature import Creature
+from data import creature
 from errors import Missing, Duplicate
 
-os.environ['CRYPTID_SQLITE_DB'] = 'test'
+from data.init import get_or_create_db
 
-from data import creature
 
+DB_PATH = get_or_create_db(DB_NAME='test')[1]
 
 @pytest.fixture
 def sample() -> Creature:
@@ -46,3 +47,5 @@ def test_delete(sample: Creature):
 def test_delete_missing(sample: Creature):
     with pytest.raises(Missing):
         creature.delete(name=sample.name)
+
+os.remove(path=DB_PATH)

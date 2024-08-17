@@ -11,8 +11,8 @@ def get_one(name: str) -> Creature | None:
 def create(creature: Creature) -> Creature:
     return data.create(creature=creature)
 
-def modify(name: str, creature: Creature) -> Creature | None:
+def modify(name: str, creature: Creature) -> Creature:
     return data.modify(name=name, creature=creature)
 
-def delete(name: str) -> bool:
+def delete(name: str) -> True:
     return data.delete(name=name)

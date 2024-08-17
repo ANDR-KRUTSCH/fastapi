@@ -2,12 +2,13 @@ import os
 import pytest
 
 from model.explorer import Explorer
+from data import explorer
 from errors import Missing, Duplicate
 
-os.environ['CRYPTID_SQLITE_DB'] = 'test'
+from data.init import get_or_create_db
 
-from data import explorer
 
+DB_PATH = get_or_create_db(DB_NAME='test')[1]
 
 @pytest.fixture
 def sample() -> Explorer:
@@ -46,3 +47,5 @@ def test_delete(sample: Explorer):
 def test_delete_missing(sample: Explorer):
     with pytest.raises(Missing):
         explorer.delete(name=sample.name)
+
+os.remove(path=DB_PATH)
